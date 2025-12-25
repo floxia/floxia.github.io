@@ -1,1 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Floxia — Downloads</title>
+  <meta name="description" content="Download releases of projects by floxia — current: Byteme.">
+  <style>
+    :root{--bg1:#071025;--bg2:#081329;--accent1:#7c3aed;--accent2:#06b6d4;--muted:rgba(255,255,255,0.72)}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;color:#fff;background:linear-gradient(180deg,var(--bg1),var(--bg2));display:flex;align-items:center;justify-content:center;padding:36px}
+    .wrap{width:min(980px,96%);padding:32px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));box-shadow:0 10px 30px rgba(2,6,23,0.6);}    
+    h1{margin:0 0 8px 0;font-size:clamp(1.8rem,3.5vw,2.6rem);background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+    p.lead{margin:0 0 20px 0;color:var(--muted)}
+    .project{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);border:1px solid rgba(255,255,255,0.02)}
+    .info{max-width:68%}
+    .name{font-weight:700;font-size:1.05rem}
+    .desc{color:var(--muted);font-size:0.95rem;margin-top:6px}
+    .actions{display:flex;gap:10px;align-items:center}
+    .btn{appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#041025}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    footer{margin-top:18px;color:rgba(255,255,255,0.45);font-size:0.9rem}
+    @media(max-width:680px){.info{max-width:100%}.project{flex-direction:column;align-items:flex-start}.actions{width:100%;justify-content:space-between}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1>Downloads</h1>
+      <p class="lead">Direct links to releases for projects by <a href="https://github.com/floxia" style="color:inherit;text-decoration:underline">@floxia</a>. Current project available for download: Byteme.</p>
+    </header>
 
+    <section aria-labelledby="byteme">
+      <div class="project" id="byteme">
+        <div class="info">
+          <div class="name">Byteme</div>
+          <div class="desc">A small description of Byteme. Replace this line with a short summary of what Byteme does (e.g., "A tiny, fast binary editor").</div>
+        </div>
+        <div class="actions">
+          <a class="btn" href="https://github.com/floxia/byteme/releases" rel="noopener" target="_blank" id="open-releases">Open Releases</a>
+          <a class="btn secondary" href="https://github.com/floxia/byteme" rel="noopener" target="_blank">Repository</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      If you want me to link to the latest release asset directly (so the button downloads the file), reply: "Link latest asset" and I'll automatically resolve the latest release asset URL and update the button. Otherwise the button opens the Releases page where users can pick assets.
+    </footer>
+  </main>
+
+  <script>
+    // Small UX: track clicks for quick feedback (no analytics)
+    document.getElementById('open-releases').addEventListener('click', function(){
+      // Briefly change text to indicate the link was opened
+      const el = this;
+      el.textContent = 'Opening...';
+      setTimeout(()=>el.textContent = 'Open Releases',900);
+    });
+  </script>
+</body>
+</html>
