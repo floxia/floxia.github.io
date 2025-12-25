@@ -3,187 +3,59 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Floxia</title>
-  <meta name="description" content="Floxia">
+  <title>Floxia — Downloads</title>
+  <meta name="description" content="Download releases of projects by floxia — current: Byteme.">
   <style>
-    :root{
-      --bg1:#0f172a;
-      --bg2:#0b1220;
-      --accent1:#7c3aed;
-      --accent2:#06b6d4;
-      --glass: rgba(255,255,255,0.06);
-      --muted: rgba(255,255,255,0.7);
-    }
+    :root{--bg1:#071025;--bg2:#081329;--accent1:#7c3aed;--accent2:#06b6d4;--muted:rgba(255,255,255,0.72)}
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent),
-                  radial-gradient(900px 500px at 90% 90%, rgba(6,182,212,0.08), transparent),
-                  linear-gradient(180deg,var(--bg1),var(--bg2));
-      color: #fff;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:48px;
-    }
-    .card{
-      width:min(1000px,96%);
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border-radius:20px;
-      padding:48px;
-      box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-      display:grid;
-      grid-template-columns: 1fr 380px;
-      gap:32px;
-      align-items:center;
-      backdrop-filter: blur(8px) saturate(120%);
-    }
-    .hero{
-      padding-right:8px;
-    }
-    .title{
-      font-size: clamp(2.1rem, 4.5vw, 3.6rem);
-      line-height:1.02;
-      margin:0 0 12px 0;
-      font-weight:700;
-      background: linear-gradient(90deg,var(--accent1),var(--accent2));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-      letter-spacing:-0.5px;
-      text-wrap:balance;
-      transform: translateZ(0);
-    }
-    .lead{
-      margin:0 0 20px 0;
-      color:var(--muted);
-      font-size:1.05rem;
-      max-width:60ch;
-    }
-    .cta-row{display:flex;gap:12px;align-items:center}
-    .btn{
-      appearance:none;
-      border:0;
-      cursor:pointer;
-      padding:12px 18px;
-      border-radius:12px;
-      font-weight:600;
-      color: #041025;
-      background: linear-gradient(90deg,var(--accent2),var(--accent1));
-      box-shadow: 0 6px 18px rgba(12,8,30,0.6);
-      transition: transform .12s ease, box-shadow .12s ease;
-    }
-    .btn.secondary{
-      background:transparent;
-      color:var(--muted);
-      border:1px solid rgba(255,255,255,0.06);
-      box-shadow:none;
-    }
-    .btn:active{transform:translateY(1px)}
-
-    .panel{
-      padding:20px;
-      border-radius:14px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.02);
-    }
-    .features{display:flex;flex-direction:column;gap:12px}
-    .feature{display:flex;gap:12px;align-items:flex-start}
-    .dot{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.02);font-weight:700}
-    .ftext{font-weight:600}
-    .fsub{font-size:0.92rem;color:var(--muted)}
-
-    /* floating blobs */
-    .blobs{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:32px}
-    .blob{position:absolute;filter:blur(60px);opacity:0.18;transform:translate3d(0,0,0)}
-    .blob.a{width:360px;height:360px;background:radial-gradient(circle at 20% 20%, #7c3aed, transparent 40%);left:-80px;top:-80px}
-    .blob.b{width:420px;height:420px;background:radial-gradient(circle at 80% 80%, #06b6d4, transparent 40%);right:-100px;bottom:-100px}
-
-    /* responsive */
-    @media (max-width:880px){
-      .card{grid-template-columns:1fr;}
-      .card{padding:28px}
-    }
-
-    /* small animation */
-    @keyframes floaty{0%{transform:translateY(0) }50%{transform:translateY(-14px)}100%{transform:translateY(0)}}
-    .blob.a{animation:floaty 7s ease-in-out infinite}
-    .blob.b{animation:floaty 9s ease-in-out infinite}
-
-    /* cool gradient text animation */
-    .title{background-size:240% 100%; animation: hue 6s linear infinite}
-    @keyframes hue{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-
+    body{margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;color:#fff;background:linear-gradient(180deg,var(--bg1),var(--bg2));display:flex;align-items:center;justify-content:center;padding:36px}
+    .wrap{width:min(980px,96%);padding:32px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));box-shadow:0 10px 30px rgba(2,6,23,0.6);}    
+    h1{margin:0 0 8px 0;font-size:clamp(1.8rem,3.5vw,2.6rem);background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+    p.lead{margin:0 0 20px 0;color:var(--muted)}
+    .project{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);border:1px solid rgba(255,255,255,0.02)}
+    .info{max-width:68%}
+    .name{font-weight:700;font-size:1.05rem}
+    .desc{color:var(--muted);font-size:0.95rem;margin-top:6px}
+    .actions{display:flex;gap:10px;align-items:center}
+    .btn{appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#041025}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
     footer{margin-top:18px;color:rgba(255,255,255,0.45);font-size:0.9rem}
+    @media(max-width:680px){.info{max-width:100%}.project{flex-direction:column;align-items:flex-start}.actions{width:100%;justify-content:space-between}}
   </style>
 </head>
 <body>
-  <div class="card" role="main">
-    <div class="hero">
-      <h1 class="title">floxia</h1>
-      <p class="lead">Fast, accessible, and beautiful — a tiny studio that turns ideas into memorable landing pages, apps, and products.
-      Built with performance and polish in mind.</p>
-      <div class="cta-row">
-        <button class="btn" id="primary">Get started</button>
-        <button class="btn secondary" id="secondary">See examples</button>
-      </div>
-      <footer>Made with ❤️ — <a href="https://github.com/floxia" style="color:inherit;text-decoration:underline;">@floxia</a></footer>
-    </div>
+  <main class="wrap">
+    <header>
+      <h1>Downloads</h1>
+      <p class="lead">Direct links to releases for projects by <a href="https://github.com/floxia" style="color:inherit;text-decoration:underline">@floxia</a>. Current project available for download: Byteme.</p>
+    </header>
 
-    <aside class="panel">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-        <div style="font-weight:700">Highlights</div>
-        <div style="font-size:0.85rem;color:var(--muted)">v1.0</div>
-      </div>
-      <div class="features">
-        <div class="feature">
-          <div class="dot">⚡</div>
-          <div>
-            <div class="ftext">Performance-first</div>
-            <div class="fsub">Optimised bundles and critical CSS so pages load instantly.</div>
-          </div>
+    <section aria-labelledby="byteme">
+      <div class="project" id="byteme">
+        <div class="info">
+          <div class="name">Byteme</div>
+          <div class="desc">A small description of Byteme. Replace this line with a short summary of what Byteme does (e.g., "A tiny, fast binary editor").</div>
         </div>
-        <div class="feature">
-          <div class="dot">🌈</div>
-          <div>
-            <div class="ftext">Beautiful by default</div>
-            <div class="fsub">Nice typography, color system, and micro-interactions out of the box.</div>
-          </div>
-        </div>
-        <div class="feature">
-          <div class="dot">🔒</div>
-          <div>
-            <div class="ftext">Privacy-first</div>
-            <div class="fsub">No trackers, no bloat — just the essentials to get your idea live.</div>
-          </div>
+        <div class="actions">
+          <a class="btn" href="https://github.com/floxia/byteme/releases" rel="noopener" target="_blank" id="open-releases">Open Releases</a>
+          <a class="btn secondary" href="https://github.com/floxia/byteme" rel="noopener" target="_blank">Repository</a>
         </div>
       </div>
-    </aside>
+    </section>
 
-    <div class="blobs" aria-hidden="true">
-      <div class="blob a"></div>
-      <div class="blob b"></div>
-    </div>
-  </div>
+    <footer>
+      If you want me to link to the latest release asset directly (so the button downloads the file), reply: "Link latest asset" and I'll automatically resolve the latest release asset URL and update the button. Otherwise the button opens the Releases page where users can pick assets.
+    </footer>
+  </main>
 
   <script>
-    // small interactions
-    document.getElementById('primary').addEventListener('click', function(){
-      const btn = this;
-      btn.textContent = 'Opening...';
-      btn.disabled = true;
-      setTimeout(()=>{
-        btn.textContent = 'Get started';
-        btn.disabled = false;
-        alert('Thanks! Replace this with your sign-up or onboarding flow.');
-      },800);
-    });
-    document.getElementById('secondary').addEventListener('click', function(){
-      alert('Examples: put links to your projects here.');
+    // Small UX: track clicks for quick feedback (no analytics)
+    document.getElementById('open-releases').addEventListener('click', function(){
+      // Briefly change text to indicate the link was opened
+      const el = this;
+      el.textContent = 'Opening...';
+      setTimeout(()=>el.textContent = 'Open Releases',900);
     });
   </script>
 </body>
