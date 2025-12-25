@@ -17,6 +17,7 @@
     .info{max-width:68%}
     .name{font-weight:700;font-size:1.05rem}
     .desc{color:var(--muted);font-size:0.95rem;margin-top:6px}
+    .meta{color:var(--muted);font-size:0.9rem;margin-top:8px}
     .actions{display:flex;gap:10px;align-items:center}
     .btn{appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#041025}
     .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
@@ -36,26 +37,26 @@
         <div class="info">
           <div class="name">Byteme</div>
           <div class="desc">A small description of Byteme. Replace this line with a short summary of what Byteme does (e.g., "A tiny, fast binary editor").</div>
+          <div class="meta">Latest release: <strong>v0.4.1</strong> — published 2025-11-16. <a href="https://github.com/floxia/byteme/releases/tag/serial" style="color:inherit;text-decoration:underline">Release notes</a></div>
         </div>
         <div class="actions">
-          <a class="btn" href="https://github.com/floxia/byteme/releases" rel="noopener" target="_blank" id="open-releases">Open Releases</a>
+          <a class="btn" href="https://github.com/floxia/byteme/releases/download/serial/byteme.exe" rel="noopener" target="_blank" download id="download-exe">Download byteme.exe</a>
           <a class="btn secondary" href="https://github.com/floxia/byteme" rel="noopener" target="_blank">Repository</a>
         </div>
       </div>
     </section>
 
     <footer>
-      If you want me to link to the latest release asset directly (so the button downloads the file), reply: "Link latest asset" and I'll automatically resolve the latest release asset URL and update the button. Otherwise the button opens the Releases page where users can pick assets.
+      If you want a different asset linked (e.g., a zip or platform-specific binary), tell me which one and I will update the button.
     </footer>
   </main>
 
   <script>
-    // Small UX: track clicks for quick feedback (no analytics)
-    document.getElementById('open-releases').addEventListener('click', function(){
-      // Briefly change text to indicate the link was opened
+    // Small UX: show immediate feedback when clicking the download button
+    document.getElementById('download-exe').addEventListener('click', function(){
       const el = this;
-      el.textContent = 'Opening...';
-      setTimeout(()=>el.textContent = 'Open Releases',900);
+      el.textContent = 'Starting download...';
+      setTimeout(()=>el.textContent = 'Download byteme.exe',1500);
     });
   </script>
 </body>
