@@ -22,21 +22,6 @@
     .btn{appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#041025;text-decoration:none;display:inline-block}
     .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
 
-    /* Animated gradient for the primary download button */
-    .btn.animated{
-      background: linear-gradient(90deg, var(--accent2), #ff7a7a, var(--accent1), #ffd36b, var(--accent2));
-      background-size: 300% 100%;
-      color:#041025;
-      box-shadow: 0 8px 30px rgba(124,58,237,0.18), 0 2px 6px rgba(0,0,0,0.4);
-      transition: transform .12s ease, box-shadow .12s ease;
-      position:relative;
-      overflow:hidden;
-    }
-    .btn.animated:active{transform:translateY(1px)}
-    .btn.animated:hover{box-shadow: 0 12px 40px rgba(124,58,237,0.22), 0 6px 12px rgba(0,0,0,0.45)}
-    @keyframes bgmove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-    .btn.animated{animation: bgmove 6s linear infinite}
-
     .changelog{margin-top:16px;background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);color:var(--muted)}
     .assets{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
     footer{margin-top:18px;color:rgba(255,255,255,0.45);font-size:0.9rem}
@@ -65,7 +50,7 @@
 
           <div class="assets">
             <!-- direct asset links -->
-            <a class="btn animated" href="https://github.com/floxia/byteme/releases/download/serial/byteme.exe" rel="noopener" target="_blank" download>Download byteme.exe</a>
+            <a class="btn" href="https://github.com/floxia/byteme/releases/download/serial/byteme.exe" rel="noopener" target="_blank" download>Download byteme.exe</a>
             <a class="btn secondary" href="https://github.com/floxia/byteme/releases/download/serial/version.txt" rel="noopener" target="_blank" download>version.txt</a>
           </div>
         </div>
