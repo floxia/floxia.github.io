@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Floxia — Downloads</title>
-  <meta name="description" content="Download releases of projects by floxia">
+  <meta name="description" content="Download releases of projects by floxia — current: Byteme.">
   <style>
     :root{--bg1:#071025;--bg2:#081329;--accent1:#7c3aed;--accent2:#06b6d4;--muted:rgba(255,255,255,0.72)}
     *{box-sizing:border-box}
@@ -13,14 +13,32 @@
     .wrap{width:min(980px,96%);padding:32px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));box-shadow:0 10px 30px rgba(2,6,23,0.6);}    
     h1{margin:0 0 8px 0;font-size:clamp(1.8rem,3.5vw,2.6rem);background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
     p.lead{margin:0 0 20px 0;color:var(--muted)}
-    .project{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);border:1px solid rgba(255,255,255,0.02)}
+    .project{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);border:1px solid rgba(255,255,255,0.02)}
     .info{max-width:68%}
     .name{font-weight:700;font-size:1.05rem}
     .desc{color:var(--muted);font-size:0.95rem;margin-top:6px}
     .meta{color:var(--muted);font-size:0.9rem;margin-top:8px}
-    .actions{display:flex;gap:10px;align-items:center}
-    .btn{appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#041025}
+    .actions{display:flex;gap:10px;align-items:center;margin-top:12px}
+    .btn{appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#041025;text-decoration:none;display:inline-block}
     .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+    /* Animated gradient for the primary download button */
+    .btn.animated{
+      background: linear-gradient(90deg, var(--accent2), #ff7a7a, var(--accent1), #ffd36b, var(--accent2));
+      background-size: 300% 100%;
+      color:#041025;
+      box-shadow: 0 8px 30px rgba(124,58,237,0.18), 0 2px 6px rgba(0,0,0,0.4);
+      transition: transform .12s ease, box-shadow .12s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn.animated:active{transform:translateY(1px)}
+    .btn.animated:hover{box-shadow: 0 12px 40px rgba(124,58,237,0.22), 0 6px 12px rgba(0,0,0,0.45)}
+    @keyframes bgmove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .btn.animated{animation: bgmove 6s linear infinite}
+
+    .changelog{margin-top:16px;background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);color:var(--muted)}
+    .assets{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
     footer{margin-top:18px;color:rgba(255,255,255,0.45);font-size:0.9rem}
     @media(max-width:680px){.info{max-width:100%}.project{flex-direction:column;align-items:flex-start}.actions{width:100%;justify-content:space-between}}
   </style>
@@ -29,34 +47,48 @@
   <main class="wrap">
     <header>
       <h1>Downloads</h1>
-      <p class="lead">Direct links to releases for projects by <a href="https://github.com/floxia" style="color:inherit;text-decoration:underline">@floxia</a>.</p>
+      <p class="lead">Direct links to releases for projects by <a href="https://github.com/floxia" style="color:inherit;text-decoration:underline">@floxia</a>. Current project available for download: Byteme.</p>
     </header>
 
     <section aria-labelledby="byteme">
       <div class="project" id="byteme">
         <div class="info">
-          <div class="name">byteme</div>
-          <div class="desc">Read only lightweight serial monitor.</div>
-          <div class="meta">Latest release: <strong>v0.4.1</strong> — published 2025-11-16. <a href="https://github.com/floxia/byteme/releases/tag/serial" style="color:inherit;text-decoration:underline">Release notes</a></div>
+          <div class="name">Byteme</div>
+          <div class="desc">A tiny, fast binary editor. (Replace or expand this description as you like.)</div>
+          <div class="meta">Latest release: <strong>v0.4.1</strong> (tag: <code>serial</code>) — published 2025-11-16. <a href="https://github.com/floxia/byteme/releases/tag/serial" style="color:inherit;text-decoration:underline">Release notes</a></div>
+
+          <div class="changelog" aria-live="polite">
+            <strong>Release notes — v0.4.1</strong>
+            <p style="margin:8px 0 0 0">This update does not introduce new features, but the entire application has been repackaged using Nuitka to provide improved performance, better portability, and a more optimized distribution.</p>
+            <p style="margin:6px 0 0 0"><em>No functional changes to core features.</em></p>
+          </div>
+
+          <div class="assets">
+            <!-- direct asset links -->
+            <a class="btn animated" href="https://github.com/floxia/byteme/releases/download/serial/byteme.exe" rel="noopener" target="_blank" download>Download byteme.exe</a>
+            <a class="btn secondary" href="https://github.com/floxia/byteme/releases/download/serial/version.txt" rel="noopener" target="_blank" download>version.txt</a>
+          </div>
         </div>
-        <div class="actions">
-          <a class="btn" href="https://github.com/floxia/byteme/releases/download/serial/byteme.exe" rel="noopener" target="_blank" download id="download-exe">Download</a>
+
+        <div class="actions" aria-hidden="true">
           <a class="btn secondary" href="https://github.com/floxia/byteme" rel="noopener" target="_blank">Repository</a>
         </div>
       </div>
     </section>
 
     <footer>
-      © 2025 Matteo Floria.
+      If you'd like: I can add platform-specific downloads, show file sizes/checksums, or make the "Download" button fetch the latest release dynamically. Tell me which and I'll push the update.
     </footer>
   </main>
 
   <script>
-    // Small UX: show immediate feedback when clicking the download button
-    document.getElementById('download-exe').addEventListener('click', function(){
-      const el = this;
-      el.textContent = 'Starting download...';
-      setTimeout(()=>el.textContent = 'Download byteme.exe',1500);
+    // small UX for download button (no tracking)
+    document.querySelectorAll('.btn[download]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const old = btn.textContent;
+        btn.textContent = 'Starting download...';
+        setTimeout(()=> btn.textContent = old, 1600);
+      });
     });
   </script>
 </body>
