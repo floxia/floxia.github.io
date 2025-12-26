@@ -1,3 +1,4 @@
+```html name=index.html url=https://github.com/floxia/floxia.github.io/blob/06dd52592ed68f2edf3d0b638c24d00bf44c5871/index.html
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,26 +7,156 @@
   <title>Floxia — Downloads</title>
   <meta name="description" content="Download releases of projects by floxia — current: Byteme.">
   <style>
-    :root{--bg1:#071025;--bg2:#081329;--accent1:#7c3aed;--accent2:#06b6d4;--muted:rgba(255,255,255,0.72)}
+    :root{
+      /* Dark theme (default) */
+      --bg1: #071025;
+      --bg2: #081329;
+      --accent1: #7c3aed;
+      --accent2: #06b6d4;
+      --muted: rgba(255,255,255,0.72);
+      --card-bg: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      --card-border: rgba(255,255,255,0.06);
+      --btn-text: #041025;
+    }
+
+    /* Light theme overrides */
+    :root[data-theme="light"]{
+      --bg1: #f7fbff;
+      --bg2: #eef8ff;
+      --accent1: #6b21a8; /* slightly darker accents for contrast */
+      --accent2: #0ea5a0;
+      --muted: rgba(2,6,23,0.6);
+      --card-bg: linear-gradient(180deg, rgba(2,6,23,0.03), rgba(2,6,23,0.01));
+      --card-border: rgba(2,6,23,0.06);
+      --btn-text: #fff;
+    }
+
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;color:#fff;background:linear-gradient(180deg,var(--bg1),var(--bg2));display:flex;align-items:center;justify-content:center;padding:36px}
-    .wrap{width:min(980px,96%);padding:32px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));box-shadow:0 10px 30px rgba(2,6,23,0.6);}    
-    h1{margin:0 0 8px 0;font-size:clamp(1.8rem,3.5vw,2.6rem);background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;
+      color:#fff;
+      background:linear-gradient(180deg,var(--bg1),var(--bg2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      transition: background 250ms ease, color 250ms ease;
+    }
+
+    .wrap{
+      width:min(980px,96%);
+      padding:32px;
+      border-radius:18px;
+      background:var(--card-bg);
+      box-shadow:0 10px 30px rgba(2,6,23,0.6);
+      position:relative; /* so the theme toggle can be absolutely positioned without affecting layout */
+    }
+
+    h1{
+      margin:0 0 8px 0;
+      font-size:clamp(1.8rem,3.5vw,2.6rem);
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
     p.lead{margin:0 0 20px 0;color:var(--muted)}
-    .project{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);border:1px solid rgba(255,255,255,0.02)}
+
+    .project{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:16px;
+      border-radius:12px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);
+      border:1px solid var(--card-border);
+      margin-top:10px;
+    }
+
     .info{max-width:68%}
     .name{font-weight:700;font-size:1.05rem}
     .desc{color:var(--muted);font-size:0.95rem;margin-top:6px}
     .actions{display:flex;gap:10px;align-items:center}
-    .btn{appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#041025}
-    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    .btn{
+      appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;
+      background:linear-gradient(90deg,var(--accent2),var(--accent1));
+      color:var(--btn-text);
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn.secondary{
+      background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)
+    }
     footer{margin-top:18px;color:rgba(255,255,255,0.45);font-size:0.9rem}
-    @media(max-width:680px){.info{max-width:100%}.project{flex-direction:column;align-items:flex-start}.actions{width:100%;justify-content:space-between}}
+
+    /* Theme toggle button */
+    .theme-toggle{
+      position:absolute;
+      top:18px;
+      right:18px;
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.06);
+      background:transparent;
+      display:inline-grid;
+      place-items:center;
+      cursor:pointer;
+      padding:6px;
+      transition:transform 200ms ease, background-color 200ms ease, border-color 200ms ease;
+      color:var(--muted);
+      backdrop-filter: blur(6px);
+    }
+    .theme-toggle:active{transform:scale(0.97)}
+    .theme-toggle svg{width:22px;height:22px;display:block;transition:transform 300ms ease, opacity 200ms ease;}
+
+    .icon-sun{transform: rotate(-20deg) scale(0.95); opacity:0}
+    .icon-moon{transform: rotate(0deg) scale(1); opacity:1}
+
+    /* When light theme is active, show sun icon and hide moon */
+    :root[data-theme="light"] .icon-sun{opacity:1; transform: rotate(0deg) scale(1);}
+    :root[data-theme="light"] .icon-moon{opacity:0; transform: rotate(20deg) scale(0.95);}
+
+    @media(max-width:680px){
+      .info{max-width:100%}
+      .project{flex-direction:column;align-items:flex-start}
+      .actions{width:100%;justify-content:space-between}
+      .theme-toggle{top:12px;right:12px}
+    }
   </style>
 </head>
 <body>
   <main class="wrap">
+    <!-- Theme toggle button (sun/moon) -->
+    <button class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Toggle color theme">
+      <!-- Sun icon -->
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="4" fill="currentColor"/>
+        <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v2"/>
+          <path d="M12 20v2"/>
+          <path d="M4.93 4.93l1.41 1.41"/>
+          <path d="M17.66 17.66l1.41 1.41"/>
+          <path d="M2 12h2"/>
+          <path d="M20 12h2"/>
+          <path d="M4.93 19.07l1.41-1.41"/>
+          <path d="M17.66 6.34l1.41-1.41"/>
+        </g>
+      </svg>
+
+      <!-- Moon icon -->
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor"/>
+      </svg>
+    </button>
+
     <header>
       <h1>Downloads</h1>
       <p class="lead">Direct links to releases for projects by <a href="https://github.com/floxia" style="color:inherit;text-decoration:underline">@floxia</a>. Current project available for download: Byteme.</p>
@@ -45,18 +176,68 @@
     </section>
 
     <footer>
-      If you want me to link to the latest release asset directly (so the button downloads the file), reply: "Link latest asset" and I'll automatically resolve the latest release asset URL and update the button. Otherwise the button opens the Releases page where users can pick assets.
+      If you want me to link to the latest release asset directly (so the button downloads the file), reply: "Link latest asset" and I'll automatically resolve the latest release asset URL and update the button for you.
     </footer>
   </main>
 
   <script>
     // Small UX: track clicks for quick feedback (no analytics)
     document.getElementById('open-releases').addEventListener('click', function(){
-      // Briefly change text to indicate the link was opened
       const el = this;
       el.textContent = 'Opening...';
       setTimeout(()=>el.textContent = 'Open Releases',900);
     });
+
+    (function () {
+      const root = document.documentElement;
+      const toggle = document.getElementById('theme-toggle');
+      const STORAGE_KEY = 'floxia_theme'; // 'light' or 'dark'
+
+      // determine initial theme:
+      function getPreferredTheme() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored === 'light' || stored === 'dark') return stored;
+        // fallback to system preference
+        const mql = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
+        return mql && mql.matches ? 'light' : 'dark';
+      }
+
+      function applyTheme(theme) {
+        if (theme === 'light') {
+          root.setAttribute('data-theme', 'light');
+          toggle.setAttribute('aria-pressed', 'true');
+          toggle.setAttribute('aria-label', 'Switch to dark theme');
+        } else {
+          root.removeAttribute('data-theme');
+          toggle.setAttribute('aria-pressed', 'false');
+          toggle.setAttribute('aria-label', 'Switch to light theme');
+        }
+      }
+
+      // initialize
+      const initial = getPreferredTheme();
+      applyTheme(initial);
+
+      // persist preference on toggle
+      toggle.addEventListener('click', function () {
+        const isLight = root.getAttribute('data-theme') === 'light';
+        const next = isLight ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem(STORAGE_KEY, next); } catch (e) { /* ignore */ }
+      });
+
+      // respond to system changes only if user hasn't set a preference
+      try {
+        if (!localStorage.getItem(STORAGE_KEY) && window.matchMedia) {
+          window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+            applyTheme(e.matches ? 'light' : 'dark');
+          });
+        }
+      } catch (e) {
+        // some browsers restrict access to localStorage in certain contexts; ignore
+      }
+    })();
   </script>
 </body>
 </html>
+```
