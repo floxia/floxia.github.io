@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLOXIA | Downloads</title>
+    <title>FLOXIA | Digital Projects Gallery</title>
     
     <!-- Google Fonts: Space Grotesk (Display) and JetBrains Mono (Code/UI) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,11 +15,11 @@
 
     <style>
         :root {
-            /* Dark Mode (Default) */
+            /* Dark Mode (Default in CSS logic, overridden by JS if system is light) */
             --bg-color: #050505;
             --text-main: #F59E0B;
             --text-dim: #6e6e6e;
-            --accent-primary: #F59E0B; /* Cyan */
+            --accent-primary: #F59E0B; /* Amber */
             --accent-secondary: #D946EF; /* Purple */
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
@@ -32,8 +32,8 @@
             --bg-color: #f0f0f0;
             --text-main: #FB7185;
             --text-dim: #555555;
-            --accent-primary: #FB7185; /* Deep Blue */
-            --accent-secondary: #ff0055; /* Red/Pink */
+            --accent-primary: #FB7185; /* Rose */
+            --accent-secondary: #ff0055; 
             --glass-bg: rgba(0, 0, 0, 0.03);
             --glass-border: rgba(0, 0, 0, 0.1);
             --card-hover: rgba(0, 0, 0, 0.05);
@@ -383,7 +383,8 @@
         }
     </style>
 </head>
-<body data-theme="dark">
+<body>
+    <!-- NOTE: Removed data-theme="dark" to allow JS to control it based on system preference -->
 
     <!-- Preloader -->
     <div id="preloader">
@@ -465,7 +466,19 @@
     </footer>
 
     <script>
-        // --- 1. PRELOADER ---
+        // --- 1. SYSTEM PREFERENCE DETECTION ---
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let isDark = systemPrefersDark;
+
+        const body = document.body;
+        const themeBtn = document.getElementById('theme-btn');
+
+        // Apply the system preference immediately
+        body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        themeBtn.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+
+
+        // --- 2. PRELOADER ---
         const preloader = document.getElementById('preloader');
         const progressBar = document.getElementById('progress-bar');
         const canvasContainer = document.getElementById('canvas-container');
@@ -485,7 +498,7 @@
             progressBar.style.width = progress + '%';
         }, 100);
 
-        // --- 2. CUSTOM CURSOR ---
+        // --- 3. CUSTOM CURSOR ---
         const cursor = document.getElementById('cursor');
         const interactiveElements = document.querySelectorAll('.interactive');
 
@@ -499,11 +512,7 @@
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
 
-        // --- 3. THEME TOGGLE ---
-        const themeBtn = document.getElementById('theme-btn');
-        const body = document.body;
-        let isDark = true;
-
+        // --- 4. THEME TOGGLE ---
         themeBtn.addEventListener('click', () => {
             isDark = !isDark;
             body.setAttribute('data-theme', isDark ? 'dark' : 'light');
@@ -511,7 +520,7 @@
             update3DTheme();
         });
 
-        // --- 4. THREE.JS SCENE ---
+        // --- 5. THREE.JS SCENE ---
         let scene, camera, renderer;
         let mainObject, particleSystem, particleGeo;
         let mouseX = 0, mouseY = 0;
@@ -662,7 +671,7 @@
             renderer.render(scene, camera);
         }
 
-        // --- 5. MOCK FUNCTIONALITY ---
+        // --- 6. MOCK FUNCTIONALITY ---
         function fakeDownload(e) {
             e.preventDefault();
             const btn = e.currentTarget;
@@ -682,6 +691,10 @@
 
         // Initialize
         initThree();
+        
+        // IMPORTANT: Call update3DTheme immediately after init to sync with system preference
+        update3DTheme();
+        
         animate();
 
     </script>
