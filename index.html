@@ -1,242 +1,700 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Floxia — Downloads</title>
-  <meta name="description" content="Download releases of projects by floxia — current: Byteme.">
-  <style>
-    :root{
-      /* Dark theme (default) */
-      --bg1: #071025;
-      --bg2: #081329;
-      --accent1: #7c3aed;
-      --accent2: #06b6d4;
-      --muted: rgba(255,255,255,0.72);
-      --card-bg: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      --card-border: rgba(255,255,255,0.06);
-      --btn-text: #041025;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS | Digital Artifact Gallery</title>
+    
+    <!-- Google Fonts: Space Grotesk (Display) and JetBrains Mono (Code/UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Three.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-    /* Light theme overrides */
-    :root[data-theme="light"]{
-      --bg1: #f7fbff;
-      --bg2: #eef8ff;
-      --accent1: #6b21a8; /* slightly darker accents for contrast */
-      --accent2: #0ea5a0;
-      --muted: rgba(2,6,23,0.6);
-      --card-bg: linear-gradient(180deg, rgba(2,6,23,0.03), rgba(2,6,23,0.01));
-      --card-border: rgba(2,6,23,0.06);
-      --btn-text: #fff;
-    }
+    <style>
+        :root {
+            /* Dark Mode (Default) */
+            --bg-color: #050505;
+            --text-main: #e0e0e0;
+            --text-dim: #6e6e6e;
+            --accent-primary: #00f3ff; /* Cyan */
+            --accent-secondary: #bd00ff; /* Purple */
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-hover: rgba(255, 255, 255, 0.06);
+            --cursor-size: 20px;
+        }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;
-      color:#fff;
-      background:linear-gradient(180deg,var(--bg1),var(--bg2));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      transition: background 250ms ease, color 250ms ease;
-    }
+        [data-theme="light"] {
+            /* Light Mode */
+            --bg-color: #f0f0f0;
+            --text-main: #1a1a1a;
+            --text-dim: #555555;
+            --accent-primary: #0051ff; /* Deep Blue */
+            --accent-secondary: #ff0055; /* Red/Pink */
+            --glass-bg: rgba(0, 0, 0, 0.03);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --card-hover: rgba(0, 0, 0, 0.05);
+        }
 
-    .wrap{
-      width:min(980px,96%);
-      padding:32px;
-      border-radius:18px;
-      background:var(--card-bg);
-      box-shadow:0 10px 30px rgba(2,6,23,0.6);
-      position:relative; /* so the theme toggle can be absolutely positioned without affecting layout */
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom cursor handling */
+        }
 
-    h1{
-      margin:0 0 8px 0;
-      font-size:clamp(1.8rem,3.5vw,2.6rem);
-      background:linear-gradient(90deg,var(--accent1),var(--accent2));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-    }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            width: 100vw;
+        }
 
-    p.lead{margin:0 0 20px 0;color:var(--muted)}
+        /* --- Custom Cursor --- */
+        #cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--cursor-size);
+            height: var(--cursor-size);
+            border: 1px solid var(--text-main);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            mix-blend-mode: difference;
+        }
 
-    .project{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-      padding:16px;
-      border-radius:12px;
-      background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);
-      border:1px solid var(--card-border);
-      margin-top:10px;
-    }
+        #cursor.hovered {
+            width: 50px;
+            height: 50px;
+            background-color: var(--text-main);
+            border-color: transparent;
+            opacity: 0.8;
+        }
 
-    .info{max-width:68%}
-    .name{font-weight:700;font-size:1.05rem}
-    .desc{color:var(--muted);font-size:0.95rem;margin-top:6px}
-    .actions{display:flex;gap:10px;align-items:center}
-    .btn{
-      appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;
-      background:linear-gradient(90deg,var(--accent2),var(--accent1));
-      color:var(--btn-text);
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-    .btn.secondary{
-      background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)
-    }
-    footer{margin-top:18px;color:rgba(255,255,255,0.45);font-size:0.9rem}
+        /* --- Typography --- */
+        h1, h2, h3 {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
 
-    /* Theme toggle button */
-    .theme-toggle{
-      position:absolute;
-      top:18px;
-      right:18px;
-      width:44px;
-      height:44px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.06);
-      background:transparent;
-      display:inline-grid;
-      place-items:center;
-      cursor:pointer;
-      padding:6px;
-      transition:transform 200ms ease, background-color 200ms ease, border-color 200ms ease;
-      color:var(--muted);
-      backdrop-filter: blur(6px);
-    }
-    .theme-toggle:active{transform:scale(0.97)}
-    .theme-toggle svg{width:22px;height:22px;display:block;transition:transform 300ms ease, opacity 200ms ease;}
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-primary);
+        }
 
-    .icon-sun{transform: rotate(-20deg) scale(0.95); opacity:0}
-    .icon-moon{transform: rotate(0deg) scale(1); opacity:1}
+        /* --- Layout --- */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
 
-    /* When light theme is active, show sun icon and hide moon */
-    :root[data-theme="light"] .icon-sun{opacity:1; transform: rotate(0deg) scale(1);}
-    :root[data-theme="light"] .icon-moon{opacity:0; transform: rotate(20deg) scale(0.95);}
+        main {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
 
-    @media(max-width:680px){
-      .info{max-width:100%}
-      .project{flex-direction:column;align-items:flex-start}
-      .actions{width:100%;justify-content:space-between}
-      .theme-toggle{top:12px;right:12px}
-    }
-  </style>
+        /* --- Header / Nav --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: exclusion; /* Cool effect over 3D */
+            color: white; /* Forced for exclusion mode */
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: white;
+            color: black;
+        }
+
+        /* --- Hero Section --- */
+        #hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: clamp(4rem, 10vw, 12rem);
+            line-height: 0.85;
+            mix-blend-mode: exclusion;
+            color: white;
+            position: relative;
+        }
+
+        .hero-title span {
+            display: block;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .hero-title span:nth-child(2) { animation-delay: 0.1s; }
+        .hero-title span:nth-child(3) { animation-delay: 0.2s; }
+
+        .hero-sub {
+            margin-top: 2rem;
+            max-width: 400px;
+            color: var(--text-dim);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.8s;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0.6;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--accent-primary), transparent);
+        }
+
+        /* --- Projects Section --- */
+        #projects {
+            min-height: 100vh;
+            padding: 8rem 10%;
+            background: linear-gradient(to bottom, transparent, var(--bg-color) 20%);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 5rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 4px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background: var(--card-hover);
+            border-color: var(--accent-primary);
+        }
+
+        .card-id {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            border: 1px solid var(--text-main);
+            padding: 0.8rem 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--text-main);
+            z-index: -1;
+            transition: left 0.3s ease;
+        }
+
+        .download-btn:hover {
+            color: var(--bg-color);
+        }
+
+        .download-btn:hover::before {
+            left: 0;
+        }
+
+        /* --- Glitch Effect (CSS only) --- */
+        .glitch-text {
+            position: relative;
+        }
+        
+        .card:hover .glitch-text {
+            animation: glitch-anim 0.3s infinite;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 4rem 10%;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* --- Preloader --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--accent-primary);
+            transition: width 0.2s;
+        }
+
+        /* --- Utilities --- */
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3.5rem; }
+            #projects { padding: 6rem 5%; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        }
+    </style>
 </head>
-<body>
-  <main class="wrap">
-    <!-- Theme toggle button (sun/moon) -->
-    <button class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Toggle color theme">
-      <!-- Sun icon -->
-      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="4" fill="currentColor"/>
-        <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2v2"/>
-          <path d="M12 20v2"/>
-          <path d="M4.93 4.93l1.41 1.41"/>
-          <path d="M17.66 17.66l1.41 1.41"/>
-          <path d="M2 12h2"/>
-          <path d="M20 12h2"/>
-          <path d="M4.93 19.07l1.41-1.41"/>
-          <path d="M17.66 6.34l1.41-1.41"/>
-        </g>
-      </svg>
+<body data-theme="dark">
 
-      <!-- Moon icon -->
-      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor"/>
-      </svg>
-    </button>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="mono">System Initialization</div>
+        <div class="loader-bar"><div class="loader-progress" id="progress-bar"></div></div>
+    </div>
 
-    <header>
-      <h1>Downloads</h1>
-      <p class="lead">Direct links to releases for projects by <a href="https://github.com/floxia" style="color:inherit;text-decoration:underline">@floxia</a>.</p>
-    </header>
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
 
-    <section aria-labelledby="byteme">
-      <div class="project" id="byteme">
-        <div class="info">
-          <div class="name">byteme</div>
-          <div class="desc">Lightweight read only serial monitor.</div>
+    <!-- 3D Background -->
+    <div id="canvas-container"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">NEXUS</div>
+        <div class="controls">
+            <button class="theme-toggle interactive" id="theme-btn">Light Mode</button>
         </div>
-        <div class="actions">
-          <a class="btn" href="https://github.com/floxia/byteme/releases" rel="noopener" target="_blank" id="open-releases">Open Releases</a>
-          <a class="btn secondary" href="https://github.com/floxia/byteme" rel="noopener" target="_blank">Repository</a>
-        </div>
-      </div>
-    </section>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <h1 class="hero-title">
+                <span>DIGITAL</span>
+                <span>REALITY</span>
+                <span>FORGED</span>
+            </h1>
+            <div class="hero-sub">
+                <p class="mono">Interactive 3D Environment</p>
+                <p>Exploring the boundaries between web technologies and artistic expression. Scroll to explore the artifact collection.</p>
+            </div>
+            <div class="scroll-indicator">
+                <span>Scroll</span>
+                <div class="line"></div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects">
+            <div class="section-header">
+                <div>
+                    <span class="mono">Archive</span>
+                    <h2 class="section-title">Latest Artifacts</h2>
+                </div>
+                <p class="mono">001 - 003</p>
+            </div>
+
+            <div class="grid">
+                <!-- Project 1 -->
+                <article class="card interactive">
+                    <span class="card-id mono">artifact_01</span>
+                    <h3 class="glitch-text">Neon Neural Net</h3>
+                    <p>A WebGL visualization of synaptic firing patterns in a deep learning model. Fully interactive and procedurally generated.</p>
+                    <a href="#" class="download-btn interactive" onclick="fakeDownload(event)">
+                        <span>Download Source</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </a>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="card interactive">
+                    <span class="card-id mono">artifact_02</span>
+                    <h3 class="glitch-text">Void Shader</h3>
+                    <p>Custom GLSL fragment shaders simulating event horizon distortion. Optimized for mobile performance.</p>
+                    <a href="#" class="download-btn interactive" onclick="fakeDownload(event)">
+                        <span>Download Source</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </a>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="card interactive">
+                    <span class="card-id mono">artifact_03</span>
+                    <h3 class="glitch-text">Cyber Construct</h3>
+                    <p>A React component library for building futuristic UIs with glassmorphism and holographic effects.</p>
+                    <a href="#" class="download-btn interactive" onclick="fakeDownload(event)">
+                        <span>Download Source</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </a>
+                </article>
+            </div>
+        </section>
+    </main>
 
     <footer>
-      (c) 2025 Matteo Floria
+        <div class="mono">&copy; 2023 NEXUS SYSTEMS</div>
+        <div class="mono">DESIGNED BY ELITE ENGINEER</div>
     </footer>
-  </main>
 
-  <script>
-    // Small UX: track clicks for quick feedback (no analytics)
-    document.getElementById('open-releases').addEventListener('click', function(){
-      const el = this;
-      el.textContent = 'Opening...';
-      setTimeout(()=>el.textContent = 'Open Releases',900);
-    });
+    <script>
+        // --- 1. PRELOADER ---
+        const preloader = document.getElementById('preloader');
+        const progressBar = document.getElementById('progress-bar');
+        const canvasContainer = document.getElementById('canvas-container');
 
-    (function () {
-      const root = document.documentElement;
-      const toggle = document.getElementById('theme-toggle');
-      const STORAGE_KEY = 'floxia_theme'; // 'light' or 'dark'
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 10;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    preloader.style.visibility = 'hidden';
+                    canvasContainer.style.opacity = '1';
+                }, 500);
+            }
+            progressBar.style.width = progress + '%';
+        }, 100);
 
-      // determine initial theme:
-      function getPreferredTheme() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored === 'light' || stored === 'dark') return stored;
-        // fallback to system preference
-        const mql = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
-        return mql && mql.matches ? 'light' : 'dark';
-      }
+        // --- 2. CUSTOM CURSOR ---
+        const cursor = document.getElementById('cursor');
+        const interactiveElements = document.querySelectorAll('.interactive');
 
-      function applyTheme(theme) {
-        if (theme === 'light') {
-          root.setAttribute('data-theme', 'light');
-          toggle.setAttribute('aria-pressed', 'true');
-          toggle.setAttribute('aria-label', 'Switch to dark theme');
-        } else {
-          root.removeAttribute('data-theme');
-          toggle.setAttribute('aria-pressed', 'false');
-          toggle.setAttribute('aria-label', 'Switch to light theme');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        // --- 3. THEME TOGGLE ---
+        const themeBtn = document.getElementById('theme-btn');
+        const body = document.body;
+        let isDark = true;
+
+        themeBtn.addEventListener('click', () => {
+            isDark = !isDark;
+            body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            themeBtn.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+            update3DTheme();
+        });
+
+        // --- 4. THREE.JS SCENE ---
+        let scene, camera, renderer;
+        let mainObject, particleSystem, particleGeo;
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+        
+        // Colors
+        const colors = {
+            dark: { bg: 0x050505, obj: 0x00f3ff, particles: 0xbd00ff },
+            light: { bg: 0xf0f0f0, obj: 0x0051ff, particles: 0xff0055 }
+        };
+
+        function initThree() {
+            const container = document.getElementById('canvas-container');
+
+            // Scene setup
+            scene = new THREE.Scene();
+            // Fog for depth
+            scene.fog = new THREE.FogExp2(colors.dark.bg, 0.002);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            // --- Main Object (Icosahedron) ---
+            const geometry = new THREE.IcosahedronGeometry(1.5, 0); // Low poly look
+            const material = new THREE.MeshBasicMaterial({ 
+                color: colors.dark.obj, 
+                wireframe: true,
+                transparent: true,
+                opacity: 0.8
+            });
+            mainObject = new THREE.Mesh(geometry, material);
+            scene.add(mainObject);
+
+            // --- Inner Core (Solid) ---
+            const coreGeo = new THREE.IcosahedronGeometry(0.8, 1);
+            const coreMat = new THREE.MeshBasicMaterial({
+                color: colors.dark.obj,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.1
+            });
+            const core = new THREE.Mesh(coreGeo, coreMat);
+            mainObject.add(core);
+
+            // --- Particles ---
+            const particlesCount = 1000;
+            particleGeo = new THREE.BufferGeometry();
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for(let i = 0; i < particlesCount * 3; i++) {
+                // Spread particles wide
+                posArray[i] = (Math.random() - 0.5) * 20; 
+            }
+
+            particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particleMat = new THREE.PointsMaterial({
+                size: 0.03,
+                color: colors.dark.particles,
+                transparent: true,
+                opacity: 0.8,
+            });
+
+            particleSystem = new THREE.Points(particleGeo, particleMat);
+            scene.add(particleSystem);
+
+            // Listeners
+            document.addEventListener('mousemove', onDocumentMouseMove);
+            window.addEventListener('resize', onWindowResize);
+            window.addEventListener('scroll', onScroll);
         }
-      }
 
-      // initialize
-      const initial = getPreferredTheme();
-      applyTheme(initial);
-
-      // persist preference on toggle
-      toggle.addEventListener('click', function () {
-        const isLight = root.getAttribute('data-theme') === 'light';
-        const next = isLight ? 'dark' : 'light';
-        applyTheme(next);
-        try { localStorage.setItem(STORAGE_KEY, next); } catch (e) { /* ignore */ }
-      });
-
-      // respond to system changes only if user hasn't set a preference
-      try {
-        if (!localStorage.getItem(STORAGE_KEY) && window.matchMedia) {
-          window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
-            applyTheme(e.matches ? 'light' : 'dark');
-          });
+        function onDocumentMouseMove(event) {
+            mouseX = (event.clientX - window.innerWidth / 2) * 0.001;
+            mouseY = (event.clientY - window.innerHeight / 2) * 0.001;
         }
-      } catch (e) {
-        // some browsers restrict access to localStorage in certain contexts; ignore
-      }
-    })();
-  </script>
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onScroll() {
+            const scrollY = window.scrollY;
+            const height = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = scrollY / height;
+
+            // Move camera or object based on scroll
+            // Rotate main object faster on scroll
+            mainObject.rotation.z = scrollY * 0.002;
+            
+            // Move object to side when scrolling down
+            if(window.innerWidth > 768) {
+                mainObject.position.x = progress * 3; 
+                camera.position.y = -scrollY * 0.001;
+            } else {
+                mainObject.position.y = progress * -2;
+            }
+        }
+
+        function update3DTheme() {
+            const theme = isDark ? colors.dark : colors.light;
+            
+            // Tween colors (manual lerp approximation for simplicity without GSAP)
+            scene.fog.color.setHex(theme.bg);
+            mainObject.material.color.setHex(theme.obj);
+            mainObject.children[0].material.color.setHex(theme.obj);
+            particleSystem.material.color.setHex(theme.particles);
+            
+            // Update nav mix-blend-mode for visibility
+            const nav = document.querySelector('nav');
+            nav.style.mixBlendMode = isDark ? 'exclusion' : 'normal';
+            if(!isDark) {
+                document.querySelector('.logo').style.color = 'var(--text-main)';
+                document.querySelector('.theme-toggle').style.borderColor = 'var(--text-main)';
+                document.querySelector('.theme-toggle').style.color = 'var(--text-main)';
+            } else {
+                document.querySelector('.logo').style.color = 'white';
+                document.querySelector('.theme-toggle').style.borderColor = 'white';
+                document.querySelector('.theme-toggle').style.color = 'white';
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Smooth mouse follow
+            targetX = mouseX * 2;
+            targetY = mouseY * 2;
+
+            mainObject.rotation.y += 0.05 * (targetX - mainObject.rotation.y);
+            mainObject.rotation.x += 0.05 * (targetY - mainObject.rotation.x);
+            
+            // Constant idle rotation
+            mainObject.rotation.z += 0.002;
+            particleSystem.rotation.y -= 0.001;
+
+            // Mouse parallax on particles
+            particleSystem.rotation.x += 0.05 * (targetY * 0.5 - particleSystem.rotation.x);
+
+            renderer.render(scene, camera);
+        }
+
+        // --- 5. MOCK FUNCTIONALITY ---
+        function fakeDownload(e) {
+            e.preventDefault();
+            const btn = e.currentTarget;
+            const originalText = btn.innerHTML;
+            
+            btn.style.width = btn.offsetWidth + 'px'; // Prevent layout shift
+            btn.innerHTML = `<span style="color:var(--accent-primary)">Downloading...</span>`;
+            
+            setTimeout(() => {
+                btn.innerHTML = `<span style="color:var(--accent-primary)">Complete</span>`;
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.width = 'auto';
+                }, 2000);
+            }, 1500);
+        }
+
+        // Initialize
+        initThree();
+        animate();
+
+    </script>
 </body>
 </html>
-```
